@@ -1,0 +1,16 @@
+# Build files and packages
+cache/
+build/
+src/
+*.rpm
+*.deb
+
+# Created by https://www.gitignore.io/api/vim
+
+### Vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
