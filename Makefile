@@ -37,10 +37,10 @@ $(SOURCE_DIR)/Makefile: | $(SOURCE_DIR)
 $(SOURCE_DIR)/src/$(NAME): $(SOURCE_DIR)/Makefile
 	$(MAKE) -C $(SOURCE_DIR)
 
-$(BUILD_DIR)/usr/local/bin/$(NAME): | $(SOURCE_DIR)/src/$(NAME)
+$(BUILD_DIR)$(PREFIX)/bin/$(NAME): | $(SOURCE_DIR)/src/$(NAME)
 	$(MAKE) -C $(SOURCE_DIR) install DESTDIR=$(BUILD_DIR)
 
-$(PACKAGE_DIR): $(BUILD_DIR)/usr/local/bin/$(NAME)
+$(PACKAGE_DIR): $(BUILD_DIR)$(PREFIX)/bin/$(NAME)
 	$(eval roots = $(shell cd $(BUILD_DIR) && find $(RELATIVE_PREFIX) -mindepth 1 -maxdepth 1))
 	mkdir -p $@
 	cd $@ && fpm -s dir -t $(PACKAGE_TYPE) -C $(BUILD_DIR) --force \
