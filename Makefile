@@ -1,18 +1,17 @@
 NAME = taskd
-VERSION = latest
-SOURCE_URL = http://taskwarrior.org/download/$(NAME)-$(VERSION).tar.gz
+VERSION ?= 1.2.0
+REPO = https://git.tasktools.org/scm/tm/taskd.git
 PACKAGE_URL = http://taskwarrior.org/
 PACKAGE_DESCRIPTION = Server component of Taskwarrior.
 LICENSE = MIT
-ITERATION = 1
+ITERATION ?= 1
 
 BUILD_DIR := $(CURDIR)/build
 CACHE_DIR = cache
 PACKAGE_DIR = pkg
-TARBALL = $(CACHE_DIR)/$(notdir $(SOURCE_URL))
-SOURCE_DIR = $(CACHE_DIR)/$(NAME)-$(VERSION)
-PACKAGE_TYPE = deb
-PREFIX = /usr/local
+SOURCE_DIR = $(CACHE_DIR)/$(NAME)
+PACKAGE_TYPE ?= deb
+PREFIX ?= /usr/local
 
 .PHONY: all
 all: $(PACKAGE_DIR)
@@ -20,18 +19,11 @@ all: $(PACKAGE_DIR)
 $(BUILD_DIR) $(CACHE_DIR):
 	mkdir -p $@
 
-.PRECIOUS: $(TARBALL)
-$(TARBALL): | $(CACHE_DIR)
-	wget -N -c --progress=dot:binary $(SOURCE_URL) -P $(CACHE_DIR)
-
-$(SOURCE_DIR): $(TARBALL) | $(CACHE_DIR)
-	tar xf $< -C $(CACHE_DIR)
-ifeq ($(VERSION),latest)
-	$(eval VERSION := $(patsubst $(NAME)-%/,%,$(dir $(shell tar tf $< | head -1))))
-endif
+$(SOURCE_DIR): | $(CACHE_DIR)
+	cd $| && git clone --recursive -j2 --depth 1 $(REPO) -b $(VERSION)
 
 $(SOURCE_DIR)/Makefile: | $(SOURCE_DIR)
-	cd $(SOURCE_DIR) && cmake -DCMAKE_BUILD_TYPE=release .
+	cd $(SOURCE_DIR) && cmake -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=$(PREFIX) .
 
 $(SOURCE_DIR)/src/$(NAME): $(SOURCE_DIR)/Makefile
 	$(MAKE) -C $(SOURCE_DIR)
