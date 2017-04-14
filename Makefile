@@ -20,7 +20,7 @@ $(BUILD_DIR) $(CACHE_DIR):
 	mkdir -p $@
 
 $(SOURCE_DIR): | $(CACHE_DIR)
-	cd $| && git clone --recursive -j2 --depth 1 $(REPO) -b $(VERSION)
+	cd $| && git clone --recursive --depth 1 $(REPO) -b $(VERSION)
 
 $(SOURCE_DIR)/Makefile: | $(SOURCE_DIR)
 	cd $(SOURCE_DIR) && cmake -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=$(PREFIX) .
