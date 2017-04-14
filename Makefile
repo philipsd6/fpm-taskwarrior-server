@@ -1,6 +1,6 @@
 NAME = taskd
 VERSION ?= 1.2.0
-REPO = https://git.tasktools.org/scm/tm/$(NAME).git
+REPO = https://git.tasktools.org/TM/$(NAME).git
 PACKAGE_URL = http://taskwarrior.org/
 PACKAGE_DESCRIPTION = Server component of Taskwarrior.
 LICENSE = MIT
