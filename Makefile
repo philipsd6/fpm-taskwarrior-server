@@ -46,10 +46,9 @@ clean:
 distclean: clean
 	rm -rf $(PACKAGE_DIR)
 
-install: ~/pkgs
+install:
 ifeq ($(PACKAGE_TYPE),deb)
 	sudo dpkg -i $(PACKAGE_DIR)/$(NAME)*.$(PACKAGE_TYPE)
 else
 	sudo rpm -ivh $(PACKAGE_DIR)/$(NAME)*.$(PACKAGE_TYPE)
 endif
-	cp -a $(PACKAGE_DIR)/*.$(PACKAGE_TYPE) ~/pkgs/
